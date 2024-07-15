@@ -11,3 +11,6 @@ def temp_classifier(temp_celsius):
         return 2
     elif temp_celsius >= 15:
         return 3
+
+
+
