@@ -4,10 +4,10 @@ def fahr_to_celsius(temp_fahrenheit):
 
 def temp_classifier(temp_celsius):
     if temp_celsius < -2:
-        return "0"
+        return 0
     elif  2 > temp_celsius >= -2:
-        return "1"
+        return 1
     elif  15 > temp_celsius >= 2:
-        return "2"
+        return 2
     elif temp_celsius >= 15:
-        return "3"
+        return 3
