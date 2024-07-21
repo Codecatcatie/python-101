@@ -14,3 +14,6 @@ def temp_classifier(temp_celsius):
 
 
 
+""" modules = libraries  = packages 
+pandas = common place to use pd
+plt = math pot lit 
