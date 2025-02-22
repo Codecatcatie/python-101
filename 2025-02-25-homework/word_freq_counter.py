@@ -7,6 +7,7 @@ def count_word_frequencies(sentence):
     >>> count_word_frequencies("The cat and the dog are friends")
     {'the': 2, 'cat': 1, 'and': 1, 'dog': 1, 'are': 1, 'friends': 1}
     """
+    #split each sentence inot words. then compare the frequency.
     # Your code here
     pass
 
