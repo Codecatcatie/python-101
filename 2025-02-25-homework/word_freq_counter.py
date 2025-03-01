@@ -18,11 +18,6 @@ test_cases = [
     "Hello! Hello? hello..."
 ]
 
-# Run your function against the test cases
-for test in test_cases:
-    print(f"\nInput: {test}")
-    print(f"Output: {count_word_frequencies(test)}")
-
 
 def count_word_frequencies(sentence):
  
@@ -58,3 +53,31 @@ def count_word_frequencies(sentence):
             word_count[word] = 1
 
     return word_count
+
+
+def count_new(sentence):
+
+    sentence = sentence.lower()
+
+    # step 1 - split the sentence into words
+    words = sentence.split()
+
+    word_count = {}
+    for word in words:
+
+        # step 2 - remove punctuation
+        word = word.strip(".,!?")
+
+        if word in word_count:
+            word_count[word] += 1
+        else:
+            word_count[word] = 1
+
+    return word_count
+
+
+# Run your function against the test cases
+for test in test_cases:
+    print(f"\nInput: {test}")
+    #print(f"Output: {count_word_frequencies(test)}")
+    print(f"Output: {count_new(test)}")
