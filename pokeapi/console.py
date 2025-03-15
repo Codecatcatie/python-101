@@ -53,9 +53,51 @@ def display_pokemon_basic_info(pokemon_data):
         stat_value = stat["base_stat"]
         print(f"  {stat_name}: {stat_value}")
 
-pokemon = input("\nEnter Pokémon name: ")
+def explore_pokemon_moves(pokemon_moves):
+    if not pokemon_moves:
+        return 
+    
+    level_up_moves = []
+    for move in pokemon_moves:
+        
+        #print(f"\nMove: {move["move"]["name"]}")
+
+         # Only consider level-up moves from the latest game version
+        for version_detail in move["version_group_details"]:
+           if version_detail["move_learn_method"]["name"] == "level-up":
+               level_up_moves.append({
+                  "name": move["move"]["name"],
+                  "level": version_detail["level_learned_at"]  
+               })
+        
+
+    # lambda arguments: expression (doesn't need def , you can write it right in place). Starts with thekey word landa(instead of def) then the argument, then the body.
+    # 
+    # add = lambda x, y: x + y
+    # 
+    # it equals to:
+    # 
+    # def add(x, y)
+    #   return x + y   
+    # 
+    # uppercase = lambda text: text.upper()  
+    # print(uppercase("hello"))  # Output: "HELLO"
+
+    
+    level_up_moves.sort(key=lambda x: x["level"])    
+    print(level_up_moves)
+    print(f"\nTotal moves available: {len(pokemon_moves)}")
+    return pokemon_moves
+
+#pokemon = input("\nEnter Pokémon name: ")
+#pokemon_data = get_pokemon_data(pokemon)
+#display_pokemon_basic_info(pokemon_data)
+
+pokemon = 'pikachu'
 pokemon_data = get_pokemon_data(pokemon)
-display_pokemon_basic_info(pokemon_data)
+moves = explore_pokemon_moves(pokemon_data["moves"])
+#print(moves)
+ 
 
 #mew
 #arceus
@@ -68,4 +110,4 @@ display_pokemon_basic_info(pokemon_data)
 # Mewtwo
 # Snorlax
 # Gengar
-# Gyarados . control + / = 
+# Gyarados . control + / = pipmcl
