@@ -92,7 +92,7 @@ def explore_pokemon_moves(pokemon_moves):
 
 
     # NEW: Nicely formatted output
-    
+
     for move in level_up_moves:  # Loop through each move
         print(f"Move name: {move['name']}")  # Print move name
         print(f"Move level: {move['level']}")  # Print move level
