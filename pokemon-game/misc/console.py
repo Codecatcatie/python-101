@@ -1,4 +1,5 @@
 import os
+from characters import *
 
 def clear_screen():
     os.system('clear')
@@ -23,7 +24,7 @@ def draw_game_screen(pokemon, position_x, position_y, width, height):
             screen[i] = "|" + (width - 2) * " " + "|"
 
  # Insert the Pokémon at the specified position
-    lines = pokemon.strip().split("\n")
+    lines = pokemon.split("\n")
     for i, line in enumerate(lines):
         y_pos = position_y + i
         if 0 < y_pos < height - 1:  # Stay within border
@@ -48,9 +49,49 @@ def main():
     width, height = 80, 24
     
     import characters
+
+    POKEMON_ASCII = {
+    "EEVEE": EEVEE,
+    "PIKACHU": PIKACHU,
+    "BULBASAUR": BULBASAUR,
+    "CHARMANDER": CHARMANDER,
+    "JIGGLYPUFF": JIGGLYPUFF,
+    "MEOWTH": MEOWTH,
+    "SNORLAX": SNORLAX,
+    "SQUIRTLE": SQUIRTLE,
+    "PSYDUCK": PSYDUCK,
+}
     current_pokemon = CHARMANDER
 
     draw_game_screen(current_pokemon, position_x, position_y, width, height)
+
+    print("\nControls:")
+    print("- w: Move up")
+    print("- s: Move down")
+    print("- a: Move left")
+    print("- d: Move right")
+    print("- p: Switch Pokémon")
+    print("- q: Quit the game")
+
+    # Main game loop
+    running = True
+    while running:
+        draw_game_screen(current_pokemon, position_x, position_y, width, height)  
+        # Ask for input (simple but reliable approach)
+        command = input("Enter command (w/a/s/d/p/q): ").lower()
+        # do smth
+        if command == "q":
+            running = False
+        elif command == 'w':
+            position_y = max(1, position_y - 1)  # Up
+        elif command == 's':
+            position_y = min(height - 2, position_y + 1)  # Down
+        elif command == 'a':
+            position_x = max(1, position_x - 1)  # Left
+        elif command == 'd':
+            position_x = min(width - 2, position_x + 1)  # Right
+
+
     print('Thank you for playing!')
     
 if __name__ == "__main__":

@@ -14,4 +14,3 @@ print("Doubled even numbers:", doubled_numbers)
 print("Squared doubled even numbers:", squared_evens)
 print("Sorted in descending order:", sorted_squares)
 
-
