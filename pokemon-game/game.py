@@ -8,6 +8,10 @@ import time
 # Initialize colorama
 init(autoreset=True)
 
+# # ASCII art dictionary
+# POKEMON_ASCII = {
+#     "Pikachu": { character: PIKACHU, color: 2, sound: 1 },
+
 # ASCII art dictionary
 POKEMON_ASCII = {
     "Pikachu": PIKACHU, "Bulbasaur": BULBASAUR, "Charmander": CHARMANDER, "Eevee": EEVEE,
@@ -63,81 +67,27 @@ def format_stats_block(pokemon_data):
 
     return lines
 
-def draw_combined_screen(pokemon_ascii, stats_block, pos_x, pos_y, width, height):
-    clear_screen()
-
-    # Create empty screen frame
-    screen = []
-    for i in range(height):
-        if i == 0 or i == height - 1:
-            screen.append("+" + (width - 2) * "-" + "+")
-        else:
-            screen.append("|" + (width - 2) * " " + "|")
-
-    # Draw Pokémon ASCII into screen
-    lines = pokemon_ascii.strip("\n").split("\n")
-    for i, line in enumerate(lines):
-        y = pos_y + i
-        if 0 < y < height - 1:
-            line_chars = list(screen[y])
-            for j, char in enumerate(line):
-                x = pos_x + j
-                if 0 < x < width - 1 and char != " ":
-                    line_chars[x] = char
-            screen[y] = "".join(line_chars)
-
-    # Append stats block to right side of each line
-    for i in range(len(screen)):
-        stat_line = stats_block[i] if i < len(stats_block) else ""
-        screen[i] += "   " + stat_line
-
-    # Print full combined screen
-    for line in screen:
-        print(line)
-
-def print_controls():
-    print("\nControls:")
-    print("- w: Move up")
-    print("- s: Move down")
-    print("- a: Move left")
-    print("- d: Move right")
-    print("- p: Switch Pokémon")
-    print("- q: Quit the game")
-
 def main(stdscr):
     global current_pokemon_name
+
+    # Set up colors
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLACK)   # Border
+    curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK) # Pikachu
+    curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)  # Bulbasaur
+    curses.init_pair(4, curses.COLOR_RED, curses.COLOR_BLACK)    # Charmander
+    curses.init_pair(5, curses.COLOR_CYAN, curses.COLOR_BLACK)   # Info text
 
     # Set up curses
     curses.curs_set(0)  # Hide cursor
     stdscr.clear()
     stdscr.timeout(100)  # Non-blocking input with 100ms timeout
 
-    POKEMON_ASCII = {
-        "Pikachu": PIKACHU, "Bulbasaur": BULBASAUR, "Charmander": CHARMANDER, "Eevee": EEVEE,
-        "Psyduck": PSYDUCK, "Jigglypuff": JIGGLYPUFF, "Meowth": MEOWTH, "Snorlax": SNORLAX,
-        "Squirtle": SQUIRTLE, "Magikarp": MAGIKARP, "Caterpie": CATERPIE, "Gengar": GENGAR,
-        "Charizard": CHARIZARD, "Raichu": RAICHU, "Zubat": ZUBAT, "Onix": ONIX,
-        "Togepi": TOGEPI, "Sandshrew": SANDSHREW, "Abra": ABRA, "Machop": MACHOP,
-        "Electrode": ELECTRODE, "Vileplume": VILEPLUME, "Litten": LITTEN, "Rattata": RATTATA,
-        "Jolteon": JOLTEON, "Vaporeon": VAPOREON, "Flareon": FLAREON, "Leafeon": LEAFEON,
-        "Glaceon": GLACEON, "Espeon": ESPEON, "Silicobra": SILICOBRA, "Luxray": LUXRAY,
-        "Dratini": DRATINI, "Tropius": TROPIUS, "Lugia": LUGIA, "Ho_oh": HO_OH,
-        "Miltank": MILTANK, "Zorua": ZORUA, "Leavanny": LEAVANNY, "Darumaka": DARUMAKA,
-        "Excadrill": EXCADRILL, "Wailmer": WAILMER, "Cheren": CHEREN
-    }
     current_pokemon_name = "Pikachu"
     current_pokemon = POKEMON_ASCII[current_pokemon_name]
 
     position_x, position_y = 10, 5
     width, height = 80, 24
-    #height, width = stdscr.getmaxyx()
-
-    # pokemon_names = list(POKEMON_ASCII.keys())
-    # current_name = pokemon_names[0]
-    # current_ascii = POKEMON_ASCII[current_name]
-    # pokemon_data = get_pokemon_data(current_name)
-    # stats_block = format_stats_block(pokemon_data)
-    #print_controls()
 
     # Main game loop
     running = True
@@ -149,21 +99,26 @@ def main(stdscr):
         pokemon_width = max(len(line) for line in pokemon_lines)
         pokemon_height = len(pokemon_lines)
       
-#       # # aw border
+#         Draw border
         for y in range(height-1):
             if y == 0 or y == height-2:
-                stdscr.addstr(y, 0, "+" + "-" * (width-2) + "+")
+                stdscr.addstr(y, 0, "+" + "-" * (width-2) + "+", curses.color_pair(1))
             else:
-                stdscr.addstr(y, 0, "|")
-                stdscr.addstr(y, width-1, "|")
+                stdscr.addstr(y, 0, "|", curses.color_pair(1))
+                stdscr.addstr(y, width-1, "|", curses.color_pair(1))
 
          # Draw the Pokémon
         for i, line in enumerate(pokemon_lines):
             if 0 <= position_y + i < height-2:
-                stdscr.addstr(position_y + i, position_x, line)
+                stdscr.addstr(position_y + i, position_x, line, curses.color_pair(2))
 
         # Draw info bar
-        stdscr.addstr(height-1, 0, f"Current Pokémon: {current_pokemon_name} | Use W/A/S/D to move, P to switch, Q to quit")
+        stdscr.addstr(height-1, 0, f"Current Pokémon: {current_pokemon_name} | Use W/A/S/D to move, P to switch, Q to quit", curses.color_pair(5))
+
+        # Draw stats
+        #stats_block = format_stats_block(pokemon_data)
+        #for line in stats_block:
+        #    stdscr.addstr(line)
 
         # Get user input (non-blocking)
         key = stdscr.getch()
@@ -197,18 +152,3 @@ def main(stdscr):
 if __name__ == "__main__":
     current_pokemon_name = ""
     curses.wrapper(main)
-
-
-
-
-    
-#   elif command == "p":
-#             print("Available Pokémon:", ", ".join(pokemon_names))
-#             new_name = input("Enter Pokémon name: ").strip().capitalize()
-#             if new_name in POKEMON_ASCII:
-#                 current_name = new_name
-#                 current_ascii = POKEMON_ASCII[new_name]
-#                 pokemon_data = get_pokemon_data(new_name)
-#                 stats_block = format_stats_block(pokemon_data)
-#             else:
-#                 print("Invalid name.")
